@@ -25,12 +25,12 @@ import org.apache.druid.java.util.common.StringUtils;
 import org.apache.druid.java.util.common.logger.Logger;
 import org.pac4j.core.context.ContextHelper;
 import org.pac4j.core.context.Cookie;
-import org.pac4j.core.context.Pac4jConstants;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.exception.TechnicalException;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.util.JavaSerializationHelper;
+
 
 import javax.annotation.Nullable;
 import java.io.ByteArrayInputStream;
@@ -176,11 +176,11 @@ public class Pac4jSessionStore<T extends WebContext> implements SessionStore<T>
   {
     if (value instanceof Map<?, ?>) {
       final Map<String, CommonProfile> profiles = (Map<String, CommonProfile>) value;
-      profiles.forEach((name, profile) -> profile.clearSensitiveData());
+      profiles.forEach((name, profile) -> profile.removeLoginData());
       return profiles;
     } else {
       final CommonProfile profile = (CommonProfile) value;
-      profile.clearSensitiveData();
+      profile.removeLoginData();
       return profile;
     }
   }
